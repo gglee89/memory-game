@@ -154,10 +154,6 @@ $(function() {
             }
 
             // IF player guess all cards
-            console.log("list_of_cards.length / 2: ");
-            console.log(list_of_cards.length / 2);
-            console.log("correct_move: ");
-            console.log(correct_move);
             if (correct_move == list_of_cards.length / 2) {
                 $('.game').hide();
                 $('.congratulations').fadeIn('fast');

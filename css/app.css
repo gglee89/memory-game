@@ -138,12 +138,9 @@ h1 {
     font-size: 60px;
 }
 
-.congratulations .again-btn {
-    font-size: 24px;
-    padding: 5px 10px;
-}
-
 .again-btn {
     background-color:#02ccba;
     color: #fff;
+    font-size: 24px;
+    padding: 5px 10px;
 }
