@@ -84,7 +84,7 @@ $(function() {
     }
 
     // Countdown timer
-    setInterval(() => {
+    let clock_timer = setInterval(() => {
         $timer.text(timer_ct);
         if (timer_ct > 0) {
             timer_ct--;
@@ -164,8 +164,11 @@ $(function() {
                         $('.congratulations').fadeIn('fast');
                         $icon.addClass('fa').addClass('fa-check');
                         $sub_title.text("Congratulations! You Won!");
-                        $sub_text.text("With " + moves_ct + " Moves and " + $stars.children().length + " Stars" )
+                        $sub_text.text("With " + moves_ct + " Moves and " + $stars.children().length + " Stars in " + timer_ct + " seconds!" );
                         $sub_text_2.text("Woohoo!");
+
+                        // Stop timer
+                        clearInterval(clock_timer);
                     }
 
                     // Star ratings
