@@ -121,13 +121,18 @@ $(function() {
 
     // Card click event handler
     $('.card').click((e) => {
-        e.preventDefault();
+        e.stopPropagation();
 
-        // Assure only two cards can be selected per move
-        if (attempt_ct < 2) {
+        // Show/Open the card
+        let $targetEl = $(e.target);
+        let isCardAlreadyOpen = $targetEl.attr('class').includes('show');
 
-            // Show/Open the card
-            let $targetEl = $(e.target);
+        console.log(isCardAlreadyOpen);
+
+        // If card has NOT yet been selected
+        // AND assure only two cards can be selected per move
+        if (!isCardAlreadyOpen && attempt_ct < 2) {
+
             $targetEl.addClass('show').addClass('open').hide().fadeIn('show');
 
             let $selectedCard = $(e.target.children);
@@ -135,40 +140,46 @@ $(function() {
 
             attempt_ct++;
 
-            if ( currentCardName === selectedCardName && attempt_ct === 2) { // This is a match
-                $('.show').addClass('match').removeClass('show').removeClass('open');
-                attempt_ct = 0; //Reset attempt counter
-                moves_ct++;
-                correct_move++;
-                $moves.html(moves_ct);
-            } else if (currentCardName !== selectedCardName && attempt_ct === 2) {
-                setTimeout(() => {
-                    $('.show').removeClass('show').removeClass('open');
+            if (attempt_ct === 2) {
+
+                if (currentCardName !== selectedCardName) { // This is NOT a match
+                    setTimeout(() => {
+                        $('.show').removeClass('show').removeClass('open');
+                        attempt_ct = 0; //Reset attempt counter
+                    }, 1000);
+
+                    moves_ct++;
+                    $moves.html(moves_ct);
+                } else { // This is a match
+
+                    $('.show').addClass('match').removeClass('show').removeClass('open');
                     attempt_ct = 0; //Reset attempt counter
-                }, 1000);
+                    moves_ct++;
+                    correct_move++;
+                    $moves.html(moves_ct);
 
-                moves_ct++;
-                $moves.html(moves_ct);
-            }
+                    // IF player guess all cards
+                    if (correct_move == list_of_cards.length / 2) {
+                        $('.game').hide();
+                        $('.congratulations').fadeIn('fast');
+                        $icon.addClass('fa').addClass('fa-check');
+                        $sub_title.text("Congratulations! You Won!");
+                        $sub_text.text("With " + moves_ct + " Moves and " + $stars.children().length + " Stars" )
+                        $sub_text_2.text("Woohoo!");
+                    }
 
-            // IF player guess all cards
-            if (correct_move == list_of_cards.length / 2) {
-                $('.game').hide();
-                $('.congratulations').fadeIn('fast');
-                $icon.addClass('fa').addClass('fa-check');
-                $sub_title.text("Congratulations! You Won!");
-                $sub_text.text("With " + moves_ct + " Moves and " + $stars.children().length + " Stars" )
-                $sub_text_2.text("Woohoo!");
-            }
+                    // Star ratings
+                    // Ensure there are stars available before removing it
+                    if ($stars.children().length > 0) {
+                        if (moves_ct == 16) {
+                            $stars.children()[0].remove();
+                        } else if (moves_ct == 24) {
+                            $stars.children()[0].remove();
+                        }
+                    }
 
-            // Star ratings
-            // Ensure there are stars available before removing it
-            if ($stars.children().length > 0) {
-                if (moves_ct == 16) {
-                    $stars.children()[0].remove();
-                } else if (moves_ct == 24) {
-                    $stars.children()[0].remove();
                 }
+
             }
 
             // Update selectedCardName with the current selectedCardName
@@ -176,6 +187,8 @@ $(function() {
 
         }
 
+    }).children().click(function(e) {
+        return false;
     });
 
 });
