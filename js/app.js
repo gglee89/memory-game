@@ -141,9 +141,7 @@ $(function() {
                 moves_ct++;
                 correct_move++;
                 $moves.html(moves_ct);
-            } else if (currentCardName !== selectedCardName && attempt_ct === 1) {
-                // N/A
-            } else {
+            } else if (currentCardName !== selectedCardName && attempt_ct === 2) {
                 setTimeout(() => {
                     $('.show').removeClass('show').removeClass('open');
                     attempt_ct = 0; //Reset attempt counter
@@ -166,11 +164,9 @@ $(function() {
             // Star ratings
             // Ensure there are stars available before removing it
             if ($stars.children().length > 0) {
-                if (moves_ct >= 16) {
+                if (moves_ct == 16) {
                     $stars.children()[0].remove();
-                } else if (moves_ct >= 24) {
-                    $stars.children()[0].remove();
-                } else if (moves_ct >= 32) {
+                } else if (moves_ct == 24) {
                     $stars.children()[0].remove();
                 }
             }
